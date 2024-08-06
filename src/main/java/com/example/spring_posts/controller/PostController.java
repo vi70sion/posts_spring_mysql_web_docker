@@ -2,10 +2,9 @@ package com.example.spring_posts.controller;
 
 import com.example.spring_posts.model.Post;
 import com.example.spring_posts.service.PostService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,9 +13,19 @@ public class PostController {
 
     PostService postService = new PostService();
 
-    @CrossOrigin
+    //@CrossOrigin
     @GetMapping("/posts")
-    public List<Post> getAllPosts() {
-        return postService.getAllPosts();
+    public ResponseEntity<List<Post>> getAllPosts() {
+
+        return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
+
+    //@CrossOrigin
+    @PostMapping("/posts")
+    public ResponseEntity<Post> addPost(@RequestBody Post post) {
+        Post newPost = postService.addPost(post);
+        return new ResponseEntity<>(newPost, HttpStatus.CREATED);
+    }
+
+
 }

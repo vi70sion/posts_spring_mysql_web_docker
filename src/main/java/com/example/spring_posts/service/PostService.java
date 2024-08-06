@@ -11,5 +11,9 @@ public class PostService {
         return postRepository.getAllPosts();
     }
 
+    public Post addPost(Post post) {
+        return postRepository.addPost(post);
+    }
+
 
 }
