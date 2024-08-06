@@ -44,7 +44,8 @@ public class PostRepository {
                 String content = resultSet.getString("content");
                 String contacts = resultSet.getString("contacts");
                 LocalDateTime created_at = LocalDateTime.parse(resultSet.getString("created_at"), formatter);
-                postList.add(new Post(id, title, content, contacts, created_at));
+                //postList.add(new Post(id, title, content, contacts, created_at));
+                postList.add(new Post(title, content, contacts));
             }
             return postList;
         } catch (SQLException e) {

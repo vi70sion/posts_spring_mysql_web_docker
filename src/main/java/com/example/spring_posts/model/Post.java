@@ -11,6 +11,11 @@ public class Post {
     private LocalDateTime created_at;
 
     public Post() { }
+    public Post(String title, String content, String contact) {
+        this.title = title;
+        this.content = content;
+        this.contact = contact;
+    }
     public Post(long id, String title, String content, String contact, LocalDateTime created_at) {
         this.id = id;
         this.title = title;
