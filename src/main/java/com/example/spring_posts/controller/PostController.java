@@ -13,14 +13,14 @@ public class PostController {
 
     PostService postService = new PostService();
 
-    //@CrossOrigin
+    @CrossOrigin
     @GetMapping("/posts")
     public ResponseEntity<List<Post>> getAllPosts() {
 
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
 
-    //@CrossOrigin
+    @CrossOrigin
     @PostMapping("/posts")
     public ResponseEntity<Post> addPost(@RequestBody Post post) {
         Post newPost = postService.addPost(post);

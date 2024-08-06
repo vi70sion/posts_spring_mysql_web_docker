@@ -14,21 +14,21 @@ public class SpringPostsApplication {
 		SpringApplication.run(SpringPostsApplication.class, args);
 	}
 
-//	@Configuration
-//	public class WebConfig implements WebMvcConfigurer {
-//		@Bean
-//		public WebMvcConfigurer corsConfigurer() {
-//			return new WebMvcConfigurer() {
-//				@Override
-//				public void addCorsMappings(CorsRegistry registry) {
-//					registry.addMapping("/**")
-//							.allowedOrigins("http://localhost:8080","http://127.0.0.1:5500/") // Adjust this to your frontend origin
-//							.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//							.allowedHeaders("*")
-//							.allowCredentials(true);
-//				}
-//			};
-//		}
-//	}
+	@Configuration
+	public class WebConfig implements WebMvcConfigurer {
+		@Bean
+		public WebMvcConfigurer corsConfigurer() {
+			return new WebMvcConfigurer() {
+				@Override
+				public void addCorsMappings(CorsRegistry registry) {
+					registry.addMapping("/**")
+							.allowedOrigins("http://localhost:8888","http://127.0.0.1:5500/") // Adjust this to your frontend origin
+							.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+							.allowedHeaders("*")
+							.allowCredentials(true);
+				}
+			};
+		}
+	}
 
 }
