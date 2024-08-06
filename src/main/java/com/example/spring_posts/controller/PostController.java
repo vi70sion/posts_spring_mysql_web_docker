@@ -15,8 +15,8 @@ public class PostController {
 
     //@CrossOrigin
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPosts() {
-        return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
+    public List<Post> getAllPosts() {
+        return postService.getAllPosts();
     }
 
     //@CrossOrigin
