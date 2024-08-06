@@ -16,6 +16,7 @@ public class PostController {
     //@CrossOrigin
     @GetMapping("/posts")
     public List<Post> getAllPosts() {
+
         return postService.getAllPosts();
     }
 
