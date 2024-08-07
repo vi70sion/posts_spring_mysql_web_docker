@@ -80,10 +80,10 @@ public class PostRepository {
         try {
             postList = new ArrayList<>();
             sqlConnection();
-            String sql = "SELECT * FROM posts ORDER BY datetime LIMIT ? OFFSET ?";
+            String sql = "SELECT * FROM posts ORDER BY created_at LIMIT ? OFFSET ?";
             PreparedStatement statement = _connection.prepareStatement(sql);
-            statement.setInt(1, 2);
-            statement.setInt(2, 1);
+            statement.setInt(1, page);
+            statement.setInt(2, (page * pageSize));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
