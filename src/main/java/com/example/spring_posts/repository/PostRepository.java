@@ -11,6 +11,7 @@ import java.util.List;
 public class PostRepository {
 
     List<Post> postList;
+    int pageSize = 2;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static Connection _connection;
 
@@ -75,6 +76,30 @@ public class PostRepository {
         return null;
     }
 
+    public List<Post> getPostsPage(int page) {
+        try {
+            postList = new ArrayList<>();
+            sqlConnection();
+            String sql = "SELECT * FROM posts ORDER BY datetime LIMIT ? OFFSET ?";
+            PreparedStatement statement = _connection.prepareStatement(sql);
+            statement.setInt(1, pageSize);
+            statement.setInt(2, page * pageSize);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+                String title = resultSet.getString("title");
+                String content = resultSet.getString("content");
+                String contacts = resultSet.getString("contacts");
+                LocalDateTime created_at = LocalDateTime.parse(resultSet.getString("created_at"), formatter);
+                postList.add(new Post(id, title, content, contacts, created_at));
+            }
+            return postList;
+        } catch (SQLException e) {
+            //
+        }
+        return new ArrayList<>();
+
+    }
 
 
 }

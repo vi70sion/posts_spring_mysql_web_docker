@@ -26,5 +26,9 @@ public class PostController {
         return new ResponseEntity<>(newPost, HttpStatus.CREATED);
     }
 
+    @GetMapping("/posts/page/{page}")
+    public ResponseEntity<List<Post>> getPostsPage(@PathVariable int page) {
+        return new ResponseEntity<>(postService.getPostsPage(page), HttpStatus.OK);
+    }
 
 }

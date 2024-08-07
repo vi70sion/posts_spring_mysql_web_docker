@@ -15,5 +15,8 @@ public class PostService {
         return postRepository.addPost(post);
     }
 
+    public List<Post> getPostsPage(int page) {
+        return postRepository.getPostsPage(page);
+    }
 
 }
