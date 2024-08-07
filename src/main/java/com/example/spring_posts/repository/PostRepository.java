@@ -82,7 +82,7 @@ public class PostRepository {
             sqlConnection();
             String sql = "SELECT * FROM posts ORDER BY created_at LIMIT ? OFFSET ?";
             PreparedStatement statement = _connection.prepareStatement(sql);
-            statement.setInt(1, page);
+            statement.setInt(1, pageSize);
             statement.setInt(2, (page * pageSize));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
