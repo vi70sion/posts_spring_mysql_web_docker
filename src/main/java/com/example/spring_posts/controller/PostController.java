@@ -18,8 +18,8 @@ import java.util.Map;
 
 @RestController
 public class PostController {
-
-    PostService postService = new PostService();
+    @Autowired
+    PostService postService;
 
     @Autowired
     private StripeService stripeService;
