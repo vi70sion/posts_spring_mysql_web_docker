@@ -2,9 +2,13 @@ package com.example.spring_posts.controller;
 
 import com.example.spring_posts.model.Post;
 import com.example.spring_posts.service.PostService;
+import com.example.spring_posts.service.StripeService;
 import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.checkout.Session;
 import com.stripe.param.PaymentIntentCreateParams;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +20,9 @@ import java.util.Map;
 public class PostController {
 
     PostService postService = new PostService();
+
+    @Autowired
+    private StripeService stripeService;
 
     //@CrossOrigin
     @GetMapping("/posts")
@@ -35,28 +42,25 @@ public class PostController {
         return new ResponseEntity<>(postService.getPostsPage(page), HttpStatus.OK);
     }
 
-    @PostMapping("/create-payment-intent")
-    public Map<String, Object> createPaymentIntent(@RequestBody Map<String, Object> paymentData) {
-        Stripe.apiKey = "sk_test_51PlEdJBsNoGKJEE7P1epIfBsJAXbYFV3g0MNCdA61wDiFAIskZhsGKn5dP18vuHDk0M9S7FTx0v2OjXbn46IhvYv00NWtGcbJW"; // secret key
-
-        Map<String, Object> response = new HashMap<>();
+    @PostMapping("/create-checkout-session")
+    public ResponseEntity<Map<String, String>> createCheckoutSession(@RequestBody Map<String, Object> data) {
         try {
-            PaymentIntentCreateParams params =
-                    PaymentIntentCreateParams.builder()
-                            .setAmount((Long) paymentData.get("amount"))
-                            .setCurrency((String) paymentData.get("currency"))
-                            .setPaymentMethod((String) paymentData.get("paymentMethodId"))
-                            .setConfirm(true)
-                            .build();
+            String successUrl = data.get("successUrl").toString();
+            String cancelUrl = data.get("cancelUrl").toString();
+            Long amount = Long.parseLong(data.get("amount").toString());
+            String currency = data.get("currency").toString();
 
-            PaymentIntent intent = PaymentIntent.create(params);
-            response.put("success", true);
-            response.put("intent", intent);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("error", e.getMessage());
+            Session session = stripeService.createCheckoutSession(successUrl, cancelUrl, amount, currency);
+
+            Map<String, String> responseData = new HashMap<>();
+            responseData.put("id", session.getId());
+
+            return ResponseEntity.ok(responseData);
+        } catch (StripeException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(errorResponse);
         }
-        return response;
     }
 
 }
